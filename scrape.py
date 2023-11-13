@@ -8,8 +8,10 @@ from bs4 import BeautifulSoup
 import time
 import re
 from pick import pick
-import progressbar
+# import progressbar
 import os
+
+import pickle
 
 df = pd.DataFrame(columns=['ID', 'Job Title', 'Organization', 'Division', 'Openings', 'Internal Status', 'City', 'Level',
                            'Applications', 'App Deadline', 'Work Term Duration', "Job Summary", "Job Responsibilities", "Required Skills",
@@ -20,20 +22,85 @@ output_name = 'WW_postings.csv'
 choice = 'Applied'
 PATH =  r'C:\Users\esthe\Documents\Coding\chromedriver_win32\chromedriver.exe'
 
-
+from webdriver_manager.chrome import ChromeDriverManager
+from selenium.webdriver.common.by import By
+import undetected_chromedriver as uc
+# from selenium.webdriver.chrome.options import Options
 def main():
-    starting_page = "https://waterlooworks.uwaterloo.ca/myAccount/co-op/coop-postings.htm"
 
-    browser = webdriver.Chrome(PATH)
-    browser.get(starting_page) # in original script, this was starting page
+    # from selenium import webdriver
+    # from selenium.webdriver.chrome.options import Options
+    # options = Options()
+    # options.add_argument("--user-data-dir=C:\\Users\Leon\\Desktop\\Test")
+    # driver = webdriver.Chrome(ChromeDriverManager().install(), options=options)
+    # driver.get("https://waterlooworks.uwaterloo.ca/waterloo.htm?action=login")
 
-    input('Are you ready?')
 
-    data = get_job_lists(choice, browser, output_name)
+    # input()
+    # options = webdriver.ChromeOptions()
+    # options.add_argument(r"--user-data-dir=C:\Users\Leon\AppData\Local\Google\Chrome\User Data") #e.g. C:\Users\You\AppData\Local\Google\Chrome\User Data
+    # options.add_argument(r'--profile-directory=C:\Users\Leon\AppData\Local\Google\Chrome\User Data\Default') #e.g. Profile 3
+    # driver = webdriver.Chrome(ChromeDriverManager().install(), options=options)
+    starting_page = "https://waterlooworks.uwaterloo.ca/waterloo.htm?action=login"
+    driver = webdriver.Chrome(ChromeDriverManager().install())
+    driver.get(starting_page) # in original script, this was starting page
+    time.sleep(1)
+    username_input_field = driver.find_element("id", "userNameInput")
+    username_input_field.send_keys("lclyao@uwaterloo.ca")
+    username_input_field.submit()
+    time.sleep(1)
+    password_input_field = driver.find_element("id", "passwordInput")
+    password_input_field.send_keys("Vggt+7Q2n#DNv&7")
+    password_input_field.submit()
+    time.sleep(1)
 
-    df.to_csv("WW_raw_postings.csv")
+    auth_button = driver.find_element(By.CSS_SELECTOR, "#auth_methods > fieldset > div.row-label.push-label > button")
+    auth_button.click()
 
-    print("Done!")
+    time.sleep(10)
+
+
+    job_page = "https://waterlooworks.uwaterloo.ca/myAccount/hire-waterloo/full-time-jobs/jobs-postings.htm"
+    driver.get(job_page)
+
+    time.sleep(3)
+    shortlist_button = driver.find_element(By.CSS_SELECTOR, "#quickSearchCountsContainer > table > tbody > tr:nth-child(2) > td.full > a")
+    shortlist_button.click()
+    time.sleep(5)
+
+# //*[@id="posting344870"]
+    postings = driver.find_elements(By.XPATH, f"//*[starts-with(@id, 'posting')]")
+
+    print(postings)
+    print(len(postings))
+    # postings = driver.find_element(By.CSS_SELECTOR, "button[id^='single_button']")
+
+#posting344870 > td:nth-child(1)
+
+    input()
+
+    # cookies = pickle.load(open("cookies.pkl", "rb"))
+    # for cookie in cookies:
+    #     driver.add_cookie(cookie)
+    # options = uc.ChromeOptions()
+    # options.add_argument(f'--user-data-dir=C:\\Users\\Leon\\AppData\\Local\\Google\\Chrome\\User\t Data\\Default') # chrome profile location
+    # options.add_argument('--disable-dev-shm-usage')
+    # options.add_argument('--no-first-run --no-service-autorun --password-store=basic')
+    # options.add_argument('--load-extension=C:\\temp\\plugin-folder')
+    # driver = uc.Chrome(options=options)
+    # driver.get('https://www.google.com')
+
+    # input()
+    # driver.quit()
+
+
+    # input('Are you ready?')
+
+    # data = get_job_lists(choice, browser, output_name)
+
+    # df.to_csv("WW_raw_postings.csv")
+
+    # print("Done!")
 
 
 def get_job_lists(choice, browser, output_name):
