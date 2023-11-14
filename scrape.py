@@ -145,7 +145,7 @@ def main():
     time.sleep(1)
     submit_file_button = driver.find_element(By.CSS_SELECTOR, "#submitFileUploadFormBtn")
     submit_file_button.click()
-
+    #test
 
     while True:
         os.system(input())
