@@ -114,7 +114,7 @@ def main():
     time.sleep(1)
 
     file_name_field = driver.find_element(By.CSS_SELECTOR, "#docName")
-    file_name_field.send_keys("%s Cover_Letter" % company_name)
+    file_name_field.send_keys("%s Cover Letter" % company_name)
 
     time.sleep(1)
 
@@ -125,6 +125,8 @@ def main():
 
     submit_file_button = driver.find_element(By.CSS_SELECTOR, "#submitFileUploadFormBtn")
     submit_file_button.click()
+
+    time.sleep(1)
 
     upload_button = driver.find_element(By.CSS_SELECTOR, "body > main > div.row-fluid > div > div.panel.panel-default > div.panel-body > div > div > div > div > div.panel-body > a")
     upload_button.click()
@@ -139,6 +141,11 @@ def main():
 
     choose_file_button = driver.find_element(By.CSS_SELECTOR, "#fileUpload_docUpload")
     choose_file_button.send_keys("/home/leon/Desktop/resume.pdf")
+
+    time.sleep(1)
+    submit_file_button = driver.find_element(By.CSS_SELECTOR, "#submitFileUploadFormBtn")
+    submit_file_button.click()
+
 
     while True:
         os.system(input())
