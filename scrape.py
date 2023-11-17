@@ -95,13 +95,15 @@ def main():
     
     os.system(compile_command)
 
+    # needs to be /home/leon for wsl
     copy_command = "sudo cp Cover_letter.pdf /home/leon/Desktop/cover_letter.pdf"
 
-    os.system(compile_command)
+    os.system(copy_command)
+    
+    time.sleep(6)
 
     # time.sleep(10)
 
-    time.sleep(6)
     
     upload_button = driver.find_element(By.CSS_SELECTOR, "body > main > div.row-fluid > div > div.panel.panel-default > div.panel-body > div > div > div > div > div.panel-body > a")
     upload_button.click()

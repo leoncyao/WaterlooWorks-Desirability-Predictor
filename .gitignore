@@ -1,7 +1,13 @@
 
 #Ignore generated CSVs
 
+*.aux
+*.out
+*.json
+node_modules
 *.log
 *.csv
 *.xlsx
 .ipynb_checkpoints
+unused/
+__pycache__
